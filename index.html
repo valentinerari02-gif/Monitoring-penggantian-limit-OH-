@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Monitoring Limit Overhaul Poka-Yoke - PLN NP UMRO</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --pln-blue: #003366; --pln-yellow: #FFCC00; --pln-teal: #008080; }
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar-pln { background-color: var(--pln-blue); color: white; border-bottom: 4px solid var(--pln-yellow); }
+        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .btn-pln { background-color: var(--pln-blue); color: white; font-weight: 600; }
+        .btn-pln:hover { background-color: #002244; color: white; }
+        .logo-brand { height: 40px; width: auto; background-color: white; padding: 3px 8px; border-radius: 6px; }
+        .logo-login { max-width: 180px; height: auto; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR UTAMA -->
+    <nav class="navbar navbar-expand-lg navbar-pln px-4 py-2">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center gap-3 text-white fw-bold" href="#">
+                <img src="1000634572.png" alt="PLN Nusantara Power" class="logo-brand">
+                <span class="fs-6 fw-normal text-warning border-start ps-3 border-light">Monitoring Limit Overhaul Poka-Yoke</span>
+            </a>
+            <div id="user-info" class="d-none text-white small d-flex align-items-center gap-3">
+                <span>👤 <span id="display-name" class="fw-bold"></span> | <span class="badge bg-warning text-dark" id="display-role"></span></span>
+                <button onclick="logout()" class="btn btn-sm btn-outline-light">Keluar</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        
+        <!-- HALAMAN 1: LOGIN TERPUSAT -->
+        <div id="login-section" class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card card-custom p-4">
+                    <div class="text-center mb-4">
+                        <img src="1000634572.png" alt="PLN Nusantara Power" class="logo-login">
+                        <h5 class="fw-bold text-dark mt-2">LOGIN SISTEM POKA-YOKE</h5>
+                        <p class="text-muted small">PT PLN Nusantara Power UMRO</p>
+                    </div>
+                    <div id="login-alert" class="alert alert-danger d-none py-2 small" role="alert"></div>
+                    <form id="login-form" onsubmit="handleLogin(event)">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Username / Kode Unit</label>
+                            <input type="text" id="username" class="form-control" placeholder="Contoh: kak_aen atau up_paiton" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Kata Sandi</label>
+                            <input type="password" id="password" class="form-control" placeholder="******" required>
+                        </div>
+                        <button type="submit" class="btn btn-pln w-100 py-2">MASUK SISTEM</button>
+                    </form>
+                    <div class="mt-4 text-muted text-center" style="font-size: 11px;">
+                        *Akses terpusat dengan pembatasan otomatis (Row-Level Security) sesuai kewenangan unit/pusat.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN 2: DASHBOARD PUSAT / KAK AEN (ADMIN & ASMAN) -->
+        <div id="admin-dashboard" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold text-dark">Pusat Kendali Monitoring Limit Overhaul</h3>
+                <button class="btn btn-success btn-sm fw-bold" onclick="alert('Membuka menu Ekspor Data Excel/PDF...')">📥 Ekspor Laporan</button>
+            </div>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-primary border-4"><h6>Total Pagu Limit</h6><h4 class="fw-bold text-primary">Rp 750.000.000</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-warning border-4"><h6>Pengajuan Masuk</h6><h4 class="fw-bold text-warning">45 Dokumen</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-success border-4"><h6>Selesai (Done)</h6><h4 class="fw-bold text-success">38 Dokumen</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-danger border-4"><h6>Selisih / Waiting</h6><h4 class="fw-bold text-danger">7 Dokumen</h4></div></div>
+            </div>
+
+            <div class="card card-custom p-3">
+                <h5 class="fw-bold mb-3">Daftar Korespondensi & Pairing Dokumen</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>No</th>
+                                <th>Unit Pembangkit</th>
+                                <th>No. Surat Keluar (UMRO)</th>
+                                <th>Nominal Diajukan</th>
+                                <th>No. Surat Balasan (UP)</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Indramayu</td>
+                                <td>B/01/OVL/2026</td>
+                                <td>Rp 150.000.000</td>
+                                <td>B/12/IND/XI/2026</td>
+                                <td><span class="badge bg-success">Done</span></td>
+                                <td><button class="btn btn-sm btn-outline-primary py-0">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Paiton</td>
+                                <td>B/03/OVL/2026</td>
+                                <td>Rp 75.000.000</td>
+                                <td>-</td>
+                                <td><span class="badge bg-warning text-dark">Waiting</span></td>
+                                <td><button class="btn btn-sm btn-outline-primary py-0">Pairing</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN 3: DASHBOARD KHUSUS UNIT PEMBANGKIT (READ-ONLY + EKSPOR) -->
+        <div id="unit-dashboard" class="d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3 class="fw-bold text-dark" id="unit-title-header">Dashboard Monitoring Unit Pembangkit</h3>
+                    <p class="text-muted mb-0" id="unit-subtitle">Menampilkan data eksklusif untuk unit Anda (Mode Read-Only)</p>
+                </div>
+                <div>
+                    <button class="btn btn-success btn-sm me-2 fw-bold" onclick="alert('Mengunduh laporan unit ke Excel...')">📥 Ekspor Excel</button>
+                    <button class="btn btn-danger btn-sm fw-bold" onclick="alert('Mengunduh laporan unit ke PDF...')">📥 Ekspor PDF</button>
+                </div>
+            </div>
+
+            <div class="card card-custom p-3">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>No</th>
+                                <th>No. Surat Keluar (UMRO)</th>
+                                <th>Tanggal</th>
+                                <th>Nominal Diajukan</th>
+                                <th>No. Surat Balasan Unit</th>
+                                <th>Status Poka-Yoke</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unit-table-body">
+                            <!-- Diisi otomatis berdasarkan unit -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-muted small mt-2">*Unit Pembangkit hanya dapat melihat data monitoring dan mengunduh laporan tanpa hak akses ubah data pusat.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL POP-UP PERINGATAN OTOMATIS (ACTIVE POKA-YOKE NOTIFICATION) -->
+    <div class="modal fade" id="warningModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold">⚠️ PERINGATAN SISTEM POKA-YOKE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div display="inline-block" class="fs-1 mb-2">🔔</div>
+                    <h5 class="fw-bold text-danger">PERHATIAN: SURAT BALASAN BELUM LENGKAP!</h5>
+                    <p class="text-muted mt-3 small" id="modal-warning-text">
+                        Sistem mendeteksi ada pengajuan limit overhaul dari Kantor Pusat UMRO yang belum diunggah surat balasannya. Mohon segera lakukan pengiriman surat balasan penggantian untuk menghindari penundaan proses verifikasi.
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-center border-0 pb-4">
+                    <button type="button" class="btn btn-warning px-4 fw-bold text-dark" data-bs-dismiss="modal">Saya Mengerti & Segera Proses</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle (Dibutuhkan untuk Modal Pop-up) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SCRIPT LOGIKA DENGAN NOTIFIKASI POPUP OTOMATIS -->
+    <script>
+        const users = [
+            { user: "kak_aen", pass: "admin123", role: "Admin Pusat (UMRO)", name: "Kak Aen", unit: "Pusat" },
+            { user: "asman", pass: "asman123", role: "Asman Keuangan", name: "Pak Firman / Asman", unit: "Pusat" },
+            { user: "up_indramayu", pass: "pln123", role: "Operator Unit", name: "UP Indramayu", unit: "Indramayu", hasPending: false },
+            { user: "up_paiton", pass: "pln123", role: "Operator Unit", name: "UP Paiton", unit: "Paiton", hasPending: true }
+        ];
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const uInput = document.getElementById('username').value.trim().toLowerCase();
+            const pInput = document.getElementById('password').value.trim();
+            const alertBox = document.getElementById('login-alert');
+
+            const found = users.find(item => item.user === uInput && item.pass === pInput);
+            
+            if (found) {
+                alertBox.classList.add('d-none');
+                document.getElementById('login-section').classList.add('d-none');
+                document.getElementById('user-info').classList.remove('d-none');
+                document.getElementById('display-name').innerText = found.name;
+                document.getElementById('display-role').innerText = found.role;
+
+                if (found.unit === "Pusat") {
+                    document.getElementById('admin-dashboard').classList.remove('d-none');
+                } else {
+                    document.getElementById('unit-dashboard').classList.remove('d-none');
+                    document.getElementById('unit-title-header').innerText = "Dashboard Monitoring: " + found.name;
+                    document.getElementById('unit-subtitle').innerText = "Menampilkan data eksklusif untuk " + found.name + " (Mode Read-Only)";
+                    
+                    let tbody = document.getElementById('unit-table-body');
+                    if (found.unit === "Paiton") {
+                        // Simulasi unit Paiton punya data yang belum dibalas
+                        tbody.innerHTML = `
+                            <tr>
+                                <td>1</td>
+                                <td>B/03/OVL/2026</td>
+                                <td>15/11/2026</td>
+                                <td>Rp 75.000.000</td>
+                                <td>- (Belum Dikirim)</td>
+                                <td><span class="badge bg-warning text-dark">Waiting / Belum Balas</span></td>
+                            </tr>
+                        `;
+                        // MUNCULKAN POP-UP NOTIFIKASI PERINGATAN OTOMATIS KARENA BELUM KIRIM SURAT BALASAN!
+                        setTimeout(() => {
+                            let warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
+                            warningModal.show();
+                        }, 500);
+
+                    } else {
+                        // Simulasi unit Indramayu yang sudah lengkap
+                        tbody.innerHTML = `
+                            <tr>
+                                <td>1</td>
+                                <td>B/01/OVL/2026</td>
+                                <td>14/11/2026</td>
+                                <td>Rp 150.000.000</td>
+                                <td>B/12/IND/XI/2026</td>
+                                <td><span class="badge bg-success">Done (Matched)</span></td>
+                            </tr>
+                        `;
+                    }
+                }
+            } else {
+                alertBox.innerText = "Username atau kata sandi salah! Coba 'kak_aen' (password: admin123) atau 'up_paiton' (password: pln123).";
+                alertBox.classList.remove('d-none');
+            }
+        }
+
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
