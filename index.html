@@ -14,26 +14,21 @@
         .btn-pln { background-color: var(--pln-blue); color: white; font-weight: 600; }
         .btn-pln:hover { background-color: #002244; color: white; }
         .logo-brand { height: 38px; width: auto; background-color: white; padding: 2px 6px; border-radius: 4px; }
-        .nav-link.active { background-color: rgba(255,255,255,0.15) !important; border-radius: 6px; font-weight: bold; color: var(--pln-yellow) !important; }
+        .badge-done { background-color: #198754; color: white; }
+        .badge-waiting { background-color: #ffc107; color: #000; }
+        .badge-selisih { background-color: #dc3545; color: white; }
+        .role-switcher { background: #e9ecef; padding: 8px 15px; border-bottom: 1px solid #dee2e6; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR UTAMA DENGAN 4 MENU NAVIGASI -->
+    <!-- NAVBAR UTAMA -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-pln px-4 py-2">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center gap-3 fw-bold" href="#">
-                <img src="logo np.png" alt="PLN Nusantara Power" class="logo-brand">
-                <span class="fs-6 fw-normal text-warning border-start ps-3 border-light">Monitoring Limit OH Poka-Yoke</span>
+                <img src="logo np.png" alt="PLN Nusantara Power" class="logo-brand" onerror="this.src='https://via.placeholder.com/120x35?text=PLN+NP'">
+                <span class="fs-6 fw-normal text-warning border-start ps-3 border-light">Sistem Poka-Yoke Limit Overhaul</span>
             </a>
-            
-            <div id="nav-menu" class="d-none navbar-nav mx-auto gap-2">
-                <a class="nav-link px-3 active" href="#" onclick="switchPage('exec-dashboard', event)">1. Ringkasan Eksekutif</a>
-                <a class="nav-link px-3" href="#" onclick="switchPage('monitoring-table', event)">2. Tabel Monitoring</a>
-                <a class="nav-link px-3" href="#" onclick="switchPage('export-center', event)">3. Pusat Ekspor</a>
-                <a class="nav-link px-3" href="#" onclick="switchPage('profile-settings', event)">4. Profil & Akun</a>
-            </div>
-
             <div id="user-info" class="d-none text-white small d-flex align-items-center gap-3">
                 <span>👤 <span id="display-name" class="fw-bold"></span> | <span class="badge bg-warning text-dark" id="display-role"></span></span>
                 <button onclick="logout()" class="btn btn-sm btn-outline-light">Keluar</button>
@@ -41,14 +36,22 @@
         </div>
     </nav>
 
-    <div class="container my-5">
+    <!-- ROLE SWITCHER UNTUK DEMO PRESENTASI OJT -->
+    <div id="demo-toolbar" class="role-switcher d-none text-center">
+        <b>🚀 Demo Switcher (Uji Coba Cepat Antar Tampilan):</b> 
+        <button onclick="switchView('admin')" class="btn btn-sm btn-primary ms-2 py-0">1. Kak Aen (Admin & Input)</button>
+        <button onclick="switchView('asman')" class="btn btn-sm btn-success ms-1 py-0">2. Asman Firman (Executive)</button>
+        <button onclick="switchView('export')" class="btn btn-sm btn-warning ms-1 py-0 text-dark">3. Pusat Ekspor</button>
+        <button onclick="switchView('unit')" class="btn btn-sm btn-info ms-1 py-0 text-dark">4. Unit Indramayu (Read-Only)</button>
+    </div>
+
+    <div class="container my-4">
         
         <!-- HALAMAN LOGIN TERPUSAT -->
-        <div id="login-section" class="row justify-content-center">
+        <div id="login-section" class="row justify-content-center mt-5">
             <div class="col-md-5">
                 <div class="card card-custom p-4">
                     <div class="text-center mb-4">
-                        <img src="logo np.png" alt="PLN Nusantara Power" style="max-width: 160px;" class="mb-3">
                         <h5 class="fw-bold text-dark">LOGIN SISTEM POKA-YOKE</h5>
                         <p class="text-muted small">PT PLN Nusantara Power UMRO</p>
                     </div>
@@ -56,7 +59,7 @@
                     <form id="login-form" onsubmit="handleLogin(event)">
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Username</label>
-                            <input type="text" id="username" class="form-control" placeholder="Contoh: kak_aen" required>
+                            <input type="text" id="username" class="form-control" placeholder="Contoh: kak_aen atau asman" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Kata Sandi</label>
@@ -64,45 +67,77 @@
                         </div>
                         <button type="submit" class="btn btn-pln w-100 py-2">MASUK SISTEM</button>
                     </form>
-                    <div class="mt-4 text-muted small border-top pt-2">
-                        <b>Akun Uji Coba:</b><br>
-                        • Admin Pusat: <code class="text-primary">kak_aen</code> / <code class="text-primary">admin123</code><br>
+                    <div class="mt-4 text-muted small border-top pt-3">
+                        <b>Akun Akses Cepat:</b><br>
+                        • Kak Aen (Admin): <code class="text-primary">kak_aen</code> / <code class="text-primary">admin123</code><br>
+                        • Asman Firman: <code class="text-primary">asman</code> / <code class="text-primary">asman123</code><br>
                         • Unit Paiton (Trigger Notif): <code class="text-primary">up_paiton</code> / <code class="text-primary">pln123</code>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 1: RINGKASAN EKSEKUTIF (ASMAN DASHBOARD) ================= -->
-        <div id="page-exec-dashboard" class="app-page d-none">
-            <h3 class="fw-bold text-dark mb-4">Halaman 1: Ringkasan Eksekutif & Kinerja Limit Overhaul</h3>
-            <div class="row g-3 mb-4">
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-primary border-4"><h6>Total Pagu Limit</h6><h4 class="fw-bold text-primary">Rp 750.000.000</h4></div></div>
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-warning border-4"><h6>Pengajuan Masuk</h6><h4 class="fw-bold text-warning">45 Dokumen</h4></div></div>
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-success border-4"><h6>Selesai (Done)</h6><h4 class="fw-bold text-success">38 Dokumen</h4></div></div>
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-danger border-4"><h6>Selisih / Waiting</h6><h4 class="fw-bold text-danger">7 Dokumen</h4></div></div>
+        <!-- ================= VIEW 1: ADMIN & INPUT DASHBOARD (KAK AEN) ================= -->
+        <div id="view-admin" class="app-view d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold text-dark m-0">ADMIN & INPUT DASHBOARD: OVERHAUL LIMIT UMRO</h4>
+                <span class="badge bg-primary fs-6">Kak Aen</span>
             </div>
-            <div class="card card-custom p-4">
-                <h5 class="fw-bold text-dark">Analisis & Validasi Poka-Yoke</h5>
-                <p class="text-muted">Modul ini menyajikan ringkasan real-time untuk Asisten Manajer Keuangan dalam mengontrol pergerakan limit overhaul, mencegah kesalahan pencatatan, dan memastikan kepatuhan unit pembangkit.</p>
-            </div>
-        </div>
 
-        <!-- ================= PAGE 2: TABEL MONITORING DETAIL ================= -->
-        <div id="page-monitoring-table" class="app-page d-none">
-            <h3 class="fw-bold text-dark mb-4">Halaman 2: Tabel Monitoring & Pairing Surat Keluar-Balasan</h3>
+            <!-- Bagian Input Atas (Dua Kolom) -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="card card-custom p-3 border-top border-primary border-4">
+                        <h6 class="fw-bold text-primary mb-3">📥 INPUT & SCAN SURAT KELUAR (UMRO)</h6>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">Unggah Surat Keluar UMRO (.pdf/.jpg)</label>
+                            <input type="file" class="form-control form-control-sm">
+                        </div>
+                        <button class="btn btn-sm btn-primary w-100 mt-2" onclick="alert('Berhasil scan & ekstrak surat keluar!')">🔍 Scan & Ekstrak OCR</button>
+                        <div class="bg-light p-2 rounded mt-2 small text-muted">
+                            <div><b>No. Surat Extracted:</b> B/2026/UMRO-01</div>
+                            <div><b>Nominal:</b> Rp 150.000.000 | <b>Tanggal:</b> 14/11/2026</div>
+                        </div>
+                        <button class="btn btn-sm btn-success w-100 mt-2 fw-bold">Simpan ke Database Pusat</button>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-custom p-3 border-top border-warning border-4">
+                        <h6 class="fw-bold text-dark mb-3">🔄 REKONSILIASI & PAIRING DOKUMEN BALASAN (UP)</h6>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">Pilih Surat Keluar UMRO (Penerima)</label>
+                            <select class="form-select form-select-sm">
+                                <option>B/2026/UMRO-01 - Indramayu</option>
+                                <option>B/2026/UMRO-02 - Paiton</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label small fw-bold">Unggah Surat Balasan UP (.pdf/.jpg)</label>
+                            <input type="file" class="form-control form-control-sm">
+                        </div>
+                        <button class="btn btn-sm btn-warning w-100 mt-2 text-dark" onclick="alert('Ekstrak OCR Balasan berhasil!')">🔍 Scan & Ekstrak OCR Balasan</button>
+                        <button class="btn btn-sm btn-success w-100 mt-2 fw-bold">⚡ Verifikasi & Hubungkan (Pairing) Dokumen</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Pencatatan & Monitoring -->
             <div class="card card-custom p-3">
+                <h5 class="fw-bold mb-3">DAFTAR PENCATATAN & MONITORING KORESPONDENSI LIMIT OH</h5>
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle small">
+                    <table class="table table-hover align-middle small text-center">
                         <thead class="table-dark">
                             <tr>
                                 <th>No</th>
                                 <th>Unit Pembangkit</th>
                                 <th>No. Surat Keluar (UMRO)</th>
-                                <th>Nominal Diajukan</th>
+                                <th>Tanggal Surat</th>
+                                <th>Nominal Diajukan (Rp)</th>
                                 <th>No. Surat Balasan (UP)</th>
-                                <th>Status Poka-Yoke</th>
-                                <th>Aksi</th>
+                                <th>Tanggal Balasan</th>
+                                <th>Nominal Balasan (Rp)</th>
+                                <th>Status & Selisih</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -110,19 +145,93 @@
                                 <td>1</td>
                                 <td>Indramayu</td>
                                 <td>B/01/OVL/2026</td>
-                                <td>Rp 150.000.000</td>
+                                <td>14/11/2026</td>
+                                <td>150,000,000</td>
                                 <td>B/12/IND/XI/2026</td>
-                                <td><span class="badge bg-success">Done (Matched)</span></td>
-                                <td><button class="btn btn-sm btn-outline-primary py-0">Detail</button></td>
+                                <td>16/11/2026</td>
+                                <td>150,000,000</td>
+                                <td><span class="badge badge-done">Done (Rp 0)</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary py-0 px-1">Edit</button>
+                                    <button class="btn btn-sm btn-outline-danger py-0 px-1">Hapus</button>
+                                </td>
                             </tr>
                             <tr>
                                 <td>2</td>
                                 <td>Paiton</td>
-                                <td>B/03/OVL/2026</td>
-                                <td>Rp 75.000.000</td>
-                                <td>- (Belum Dikirim)</td>
-                                <td><span class="badge bg-warning text-dark">Waiting / Follow-up</span></td>
-                                <td><button class="btn btn-sm btn-outline-danger py-0">Kirim Notif</button></td>
+                                <td>B/01/OVL/2026</td>
+                                <td>10/10/2026</td>
+                                <td>73,000,000</td>
+                                <td>[ Belum Dibubungkan ]</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td><span class="badge badge-waiting">Waiting (-)</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary py-0 px-1">Edit</button>
+                                    <button class="btn btn-sm btn-outline-success py-0 px-1">Hubungkan</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-muted small fst-italic mt-2">* (Data bersifat real time dan read only untuk keperluan manajemen, namun Kak Aen memiliki akses kontrol penuh di dasbor ini.)</div>
+            </div>
+        </div>
+
+        <!-- ================= VIEW 2: EXECUTIVE MONITORING DASHBOARD (ASMAN FIRMAN) ================= -->
+        <div id="view-asman" class="app-view d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold text-dark m-0">EXECUTIVE MONITORING DASHBOARD: OVERHAUL LIMIT UMRO (ASMAN FIRMAN)</h4>
+                <span class="badge bg-success fs-6">Asman</span>
+            </div>
+
+            <!-- Ringkasan Keuangan Eksekutif -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-primary border-4"><h6>TOTAL PAGU LIMIT OH</h6><h4 class="fw-bold text-primary">Rp 2.500.000.000</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-secondary border-4"><h6>TOTAL PENGAJUAN MASUK</h6><h4 class="fw-bold text-dark">14 Berkas Surat</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-success border-4"><h6>PENGAJUAN DISELESAI (DONE)</h6><h4 class="fw-bold text-success">11 Berkas</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-warning border-4"><h6>SURAT TERTUNDA (WAITING)</h6><h4 class="fw-bold text-warning">3 Berkas</h4></div></div>
+            </div>
+
+            <!-- Daftar Pemantauan Unit -->
+            <div class="card card-custom p-3">
+                <h5 class="fw-bold mb-3">DAFTAR PEMANTAUAN KINERJA UNIT PEMBANGKIT</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>No</th>
+                                <th>Unit Pembangkit</th>
+                                <th>Total Pengajuan</th>
+                                <th>Surat Selesai</th>
+                                <th>Surat Waiting</th>
+                                <th>Status Tindak Lanjut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Indramayu</td>
+                                <td>5</td>
+                                <td>4</td>
+                                <td>1</td>
+                                <td>🟡 Perlu Konfirmasi</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Paiton</td>
+                                <td>6</td>
+                                <td>6</td>
+                                <td>0</td>
+                                <td>🟢 Lancar</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Grati</td>
+                                <td>3</td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>🔴 Perlu Follow-up</td>
                             </tr>
                         </tbody>
                     </table>
@@ -130,44 +239,97 @@
             </div>
         </div>
 
-        <!-- ================= PAGE 3: PUSAT EKSPOR LAPORAN ================= -->
-        <div id="page-export-center" class="app-page d-none">
-            <h3 class="fw-bold text-dark mb-4">Halaman 3: Pusat Ekspor Laporan & Dokumen OJT</h3>
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card card-custom p-4 text-center">
-                        <h5 class="fw-bold text-success mb-3">📥 Ekspor Data ke Excel (.xlsx)</h5>
-                        <p class="text-muted small">Mengunduh seluruh rekapitulasi korespondensi dan limit overhaul untuk keperluan pelaporan keuangan.</p>
-                        <button class="btn btn-success fw-bold" onclick="alert('Mengunduh laporan rekapitulasi Excel...')">Download Excel</button>
+        <!-- ================= VIEW 3: EXPORT DATA LAPORAN ================= -->
+        <div id="view-export" class="app-view d-none">
+            <h4 class="fw-bold text-dark mb-3">EXPORT DATA LAPORAN MONITORING LIMIT OVERHAUL</h4>
+            <div class="card card-custom p-4 mb-4">
+                <h5 class="fw-bold mb-3">FILTER & EKSPOR DATA</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold">Pilih Unit Pembangkit</label>
+                        <select class="form-select">
+                            <option>Semua Unit</option>
+                            <option>Indramayu</option>
+                            <option>Paiton</option>
+                            <option>Grati</option>
+                        </select>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card card-custom p-4 text-center">
-                        <h5 class="fw-bold text-danger mb-3">📄 Ekspor Laporan Ringkasan (.pdf)</h5>
-                        <p class="text-muted small">Mencetak format dokumen resmi berstandar korporat PLN NP UMRO.</p>
-                        <button class="btn btn-danger fw-bold" onclick="alert('Mencetak laporan format PDF...')">Download PDF</button>
+                    <div class="col-md-4">
+                        <label class="form-label small fw-bold">Rentang Tanggal</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control">
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end gap-2">
+                        <button class="btn btn-primary w-50">🔍 Terapkan Filter</button>
+                        <button class="btn btn-success w-50" onclick="alert('Mengunduh laporan Excel...')">📥 Ekspor Excel</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= PAGE 4: PROFIL & PENGATURAN ================= -->
-        <div id="page-profile-settings" class="app-page d-none">
-            <h3 class="fw-bold text-dark mb-4">Halaman 4: Profil Pengguna & Pengaturan Sistem</h3>
-            <div class="card card-custom p-4">
-                <h5 class="fw-bold mb-3">Informasi Akun Aktif</h5>
-                <p><strong>Nama Pengguna:</strong> <span id="profile-name"></span></p>
-                <p><strong>Peran Sistem (RBAC):</strong> <span id="profile-role"></span></p>
-                <p><strong>Unit Kerja:</strong> PT PLN Nusantara Power UMRO</p>
-                <hr>
-                <button class="btn btn-outline-danger btn-sm" onclick="logout()">Keluar dari Sesi Ini</button>
+        <!-- ================= VIEW 4: WEB MONITORING UNIT PEMBANGKIT (READ-ONLY) ================= -->
+        <div id="view-unit" class="app-view d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <h4 class="fw-bold text-dark m-0" id="unit-title-text">WEB MONITORING OVERHAUL LIMIT - UNIT PEMBANGKIT INDRAMAYU</h4>
+                    <span class="badge bg-success mt-1">🔒 Read-Only Mode (Akses Khusus Unit)</span>
+                </div>
+                <div>
+                    <button class="btn btn-success btn-sm fw-bold" onclick="alert('Mengunduh laporan unit Excel...')">📥 Ekspor Excel</button>
+                    <button class="btn btn-danger btn-sm fw-bold" onclick="alert('Mengunduh laporan unit PDF...')">📥 Ekspor PDF</button>
+                </div>
+            </div>
+
+            <div class="card card-custom p-3">
+                <h5 class="fw-bold mb-3">PRATINJAU DATA & STATUS LIMIT OVERHAUL</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle small text-center">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>No</th>
+                                <th>No. Surat Keluar (UMRO)</th>
+                                <th>Tanggal Surat</th>
+                                <th>Nominal Diajukan (Rp)</th>
+                                <th>No. Surat Balasan (UP)</th>
+                                <th>Tanggal Balasan</th>
+                                <th>Nominal Balasan (Rp)</th>
+                                <th>Status Poka-Yoke</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unit-table-content">
+                            <tr>
+                                <td>1</td>
+                                <td>00234162701 (UMRO)</td>
+                                <td>18.08.2023</td>
+                                <td>50.000.000</td>
+                                <td>-</td>
+                                <td>04.02.2023</td>
+                                <td>38.000.000</td>
+                                <td><span class="badge badge-done">Done</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>00234162701 (UMRO)</td>
+                                <td>19.08.2023</td>
+                                <td>43.000.000</td>
+                                <td>002_1840102003</td>
+                                <td>29.03.2023</td>
+                                <td>45.000.000</td>
+                                <td><span class="badge badge-waiting">Waiting</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-muted small fst-italic mt-2">*(Data bersifat real-time dan hanya dapat diakses dalam mode baca untuk keperluan monitoring UP Indramayu.)</div>
             </div>
         </div>
 
     </div>
 
-    <!-- MODAL POP-UP PERINGATAN POKA-YOKE (UNTUK UNIT) -->
-    <div class="modal fade" id="warningModal" tabindex="-1" aria-hidden="true">
+    <!-- MODAL POP-UP PERINGATAN POKA-YOKE (ACTIVE NOTIFICATION) -->
+    <div class="modal fade" id="pokaYokeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
                 <div class="modal-header bg-warning text-dark">
@@ -176,25 +338,29 @@
                 </div>
                 <div class="modal-body text-center py-4">
                     <div class="fs-1 mb-2">🔔</div>
-                    <h5 class="fw-bold text-danger">SURAT BALASAN BELUM LENGKAP!</h5>
+                    <h5 class="fw-bold text-danger">PERHATIAN: SURAT BALASAN BELUM DIKIRIM!</h5>
                     <p class="text-muted mt-3 small">
-                        Sistem mendeteksi ada pengajuan limit overhaul dari Pusat yang belum diunggah surat balasannya. Mohon segera proses untuk menghindari tertundanya verifikasi keuangan.
+                        Sistem mendeteksi ada surat keluar limit overhaul dari Pusat yang belum dibalas. Mohon segera lakukan pengiriman surat balasan penggantian untuk menghindari kendala verifikasi keuangan unit.
                     </p>
                 </div>
                 <div class="modal-footer justify-content-center border-0 pb-4">
-                    <button type="button" class="btn btn-warning px-4 fw-bold text-dark" data-bs-dismiss="modal">Saya Mengerti</button>
+                    <button type="button" class="btn btn-warning px-4 fw-bold text-dark" data-bs-dismiss="modal">Saya Mengerti & Segera Proses</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        const users = [
-            { user: "kak_aen", pass: "admin123", role: "Admin Pusat (UMRO)", name: "Kak Aen", unit: "Pusat" },
-            { user: "up_paiton", pass: "pln123", role: "Operator Unit", name: "UP Paiton", unit: "Paiton", hasPending: true }
+        // Simulasi Akun Pengguna
+        const accounts = [
+            { user: "kak_aen", pass: "admin123", view: "admin", name: "Kak Aen", role: "Admin Pusat" },
+            { user: "asman", pass: "asman123", view: "asman", name: "Asman Firman", role: "Asman Keuangan" },
+            { user: "export", pass: "export123", view: "export", name: "Staff Export", role: "Pusat Laporan" },
+            { user: "up_indramayu", pass: "pln123", view: "unit", name: "UP Indramayu", role: "Operator Unit", unitName: "UP INDRAMAYU" },
+            { user: "up_paiton", pass: "pln123", view: "unit", name: "UP Paiton", role: "Operator Unit", unitName: "UP PAITON", alert: true }
         ];
 
         function handleLogin(event) {
@@ -203,44 +369,35 @@
             const pInput = document.getElementById('password').value.trim();
             const alertBox = document.getElementById('login-alert');
 
-            const found = users.find(item => item.user === uInput && item.pass === pInput);
-            
+            const found = accounts.find(acc => acc.user === uInput && acc.pass === pInput);
             if (found) {
                 alertBox.classList.add('d-none');
                 document.getElementById('login-section').classList.add('d-none');
-                document.getElementById('nav-menu').classList.remove('d-none');
                 document.getElementById('user-info').classList.remove('d-none');
+                document.getElementById('demo-toolbar').classList.remove('d-none');
                 document.getElementById('display-name').innerText = found.name;
                 document.getElementById('display-role').innerText = found.role;
-                document.getElementById('profile-name').innerText = found.name;
-                document.getElementById('profile-role').innerText = found.role;
 
-                // Tampilkan halaman pertama secara default
-                switchPage('exec-dashboard');
+                switchView(found.view);
 
-                // Jika unit paiton, trigger modal warning
-                if (found.unit === "Paiton") {
+                // Jika unit paiton, munculkan pop-up peringatan Poka-Yoke
+                if (found.alert) {
                     setTimeout(() => {
-                        let warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
-                        warningModal.show();
-                    }, 600);
+                        let myModal = new bootstrap.Modal(document.getElementById('pokaYokeModal'));
+                        myModal.show();
+                    }, 500);
                 }
             } else {
-                alertBox.innerText = "Username atau kata sandi salah!";
+                alertBox.innerText = "Username atau password salah! Gunakan akun uji coba di bawah.";
                 alertBox.classList.remove('d-none');
             }
         }
 
-        function switchPage(pageId, event) {
-            if(event) event.preventDefault();
-            // Sembunyikan semua halaman
-            document.querySelectorAll('.app-page').forEach(el => el.classList.add('d-none'));
-            // Tampilkan halaman yang dipilih
-            document.getElementById('page-' + pageId).classList.remove('d-none');
-            
-            // Atur tombol menu aktif
-            document.querySelectorAll('.navbar-nav .nav-link').forEach(el => el.classList.remove('active'));
-            if(event && event.target) event.target.classList.add('active');
+        function switchView(viewName) {
+            // Sembunyikan semua view
+            document.querySelectorAll('.app-view').forEach(el => el.classList.add('d-none'));
+            // Tampilkan view yang dipilih
+            document.getElementById('view-' + viewName).classList.remove('d-none');
         }
 
         function logout() {
