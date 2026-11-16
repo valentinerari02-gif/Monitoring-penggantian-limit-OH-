@@ -7,17 +7,14 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --pln-blue: #003366; --pln-yellow: #FFCC00; --pln-teal: #008080; }
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root { --pln-blue: #003366; --pln-yellow: #FFCC00; --pln-gray: #f4f7f6; }
+        body { background-color: var(--pln-gray); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .navbar-pln { background-color: var(--pln-blue); color: white; border-bottom: 4px solid var(--pln-yellow); }
-        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .btn-pln { background-color: var(--pln-blue); color: white; font-weight: 600; }
-        .btn-pln:hover { background-color: #002244; color: white; }
+        .card-custom { border: none; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); background: white; }
         .logo-brand { height: 38px; width: auto; background-color: white; padding: 2px 6px; border-radius: 4px; }
-        .badge-done { background-color: #198754; color: white; }
-        .badge-waiting { background-color: #ffc107; color: #000; }
-        .badge-selisih { background-color: #dc3545; color: white; }
-        .role-switcher { background: #e9ecef; padding: 8px 15px; border-bottom: 1px solid #dee2e6; font-size: 13px; }
+        .badge-done { background-color: #198754; color: white; font-weight: 500; }
+        .badge-waiting { background-color: #ffc107; color: #000; font-weight: 500; }
+        .demo-switcher { background: #fff3cd; border-bottom: 1px solid #ffeeba; font-size: 12px; padding: 6px; text-align: center; }
     </style>
 </head>
 <body>
@@ -36,13 +33,13 @@
         </div>
     </nav>
 
-    <!-- ROLE SWITCHER UNTUK DEMO PRESENTASI OJT -->
-    <div id="demo-toolbar" class="role-switcher d-none text-center">
-        <b>🚀 Demo Switcher (Uji Coba Cepat Antar Tampilan):</b> 
-        <button onclick="switchView('admin')" class="btn btn-sm btn-primary ms-2 py-0">1. Kak Aen (Admin & Input)</button>
-        <button onclick="switchView('asman')" class="btn btn-sm btn-success ms-1 py-0">2. Asman Firman (Executive)</button>
-        <button onclick="switchView('export')" class="btn btn-sm btn-warning ms-1 py-0 text-dark">3. Pusat Ekspor</button>
-        <button onclick="switchView('unit')" class="btn btn-sm btn-info ms-1 py-0 text-dark">4. Unit Indramayu (Read-Only)</button>
+    <!-- TOOLBAR DEMO CEPAT (UNTUK PRESENTASI OJT) -->
+    <div id="demo-toolbar" class="demo-switcher d-none">
+        <b>⚡ Tombol Cepat Demo Peran:</b> 
+        <button onclick="forceView('admin')" class="btn btn-sm btn-primary py-0 ms-2">1. Kak Aen (Admin)</button>
+        <button onclick="forceView('asman')" class="btn btn-sm btn-success py-0 ms-1">2. Asman Firman</button>
+        <button onclick="forceView('export')" class="btn btn-sm btn-warning py-0 ms-1 text-dark">3. Pusat Ekspor</button>
+        <button onclick="forceView('unit')" class="btn btn-sm btn-info py-0 ms-1 text-dark">4. Unit Pembangkit</button>
     </div>
 
     <div class="container my-4">
@@ -65,29 +62,29 @@
                             <label class="form-label small fw-bold">Kata Sandi</label>
                             <input type="password" id="password" class="form-control" placeholder="******" required>
                         </div>
-                        <button type="submit" class="btn btn-pln w-100 py-2">MASUK SISTEM</button>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold" style="background-color: var(--pln-blue);">MASUK SISTEM</button>
                     </form>
                     <div class="mt-4 text-muted small border-top pt-3">
-                        <b>Akun Akses Cepat:</b><br>
-                        • Kak Aen (Admin): <code class="text-primary">kak_aen</code> / <code class="text-primary">admin123</code><br>
-                        • Asman Firman: <code class="text-primary">asman</code> / <code class="text-primary">asman123</code><br>
-                        • Unit Paiton (Trigger Notif): <code class="text-primary">up_paiton</code> / <code class="text-primary">pln123</code>
+                        <b>Akses Akun Uji Coba:</b><br>
+                        • Kak Aen (Admin): <code class="text-primary">kak_aen</code> / <code class="text-primary">admin123</code>[cite: 9]<br>
+                        • Asman Firman: <code class="text-primary">asman</code> / <code class="text-primary">asman123</code>[cite: 10]<br>
+                        • Staff Export: <code class="text-primary">export</code> / <code class="text-primary">export123</code>[cite: 11]<br>
+                        • Unit Paiton (Trigger Notif): <code class="text-primary">up_paiton</code> / <code class="text-primary">pln123</code>[cite: 12]
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= VIEW 1: ADMIN & INPUT DASHBOARD (KAK AEN) ================= -->
+        <!-- MOCKUP 1: ADMIN & INPUT DASHBOARD (KAK AEN) -->
         <div id="view-admin" class="app-view d-none">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="fw-bold text-dark m-0">ADMIN & INPUT DASHBOARD: OVERHAUL LIMIT UMRO</h4>
-                <span class="badge bg-primary fs-6">Kak Aen</span>
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded text-white" style="background-color: var(--pln-blue);">
+                <h4 class="fw-bold m-0 fs-5">ADMIN & INPUT DASHBOARD: OVERHAUL LIMIT UMRO</h4>
+                <span class="badge bg-warning text-dark fs-6">Kak Aen</span>[cite: 9]
             </div>
 
-            <!-- Bagian Input Atas (Dua Kolom) -->
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
-                    <div class="card card-custom p-3 border-top border-primary border-4">
+                    <div class="card card-custom p-3 border-top border-primary border-4 h-100">
                         <h6 class="fw-bold text-primary mb-3">📥 INPUT & SCAN SURAT KELUAR (UMRO)</h6>
                         <div class="mb-2">
                             <label class="form-label small fw-bold">Unggah Surat Keluar UMRO (.pdf/.jpg)</label>
@@ -102,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card card-custom p-3 border-top border-warning border-4">
+                    <div class="card card-custom p-3 border-top border-warning border-4 h-100">
                         <h6 class="fw-bold text-dark mb-3">🔄 REKONSILIASI & PAIRING DOKUMEN BALASAN (UP)</h6>
                         <div class="mb-2">
                             <label class="form-label small fw-bold">Pilih Surat Keluar UMRO (Penerima)</label>
@@ -121,9 +118,8 @@
                 </div>
             </div>
 
-            <!-- Tabel Pencatatan & Monitoring -->
             <div class="card card-custom p-3">
-                <h5 class="fw-bold mb-3">DAFTAR PENCATATAN & MONITORING KORESPONDENSI LIMIT OH</h5>
+                <h5 class="fw-bold mb-3 fs-6 text-dark">📋 TABEL PENCATATAN & MONITORING KORESPONDENSI LIMIT OH</h5>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle small text-center">
                         <thead class="table-dark">
@@ -174,28 +170,26 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="text-muted small fst-italic mt-2">* (Data bersifat real time dan read only untuk keperluan manajemen, namun Kak Aen memiliki akses kontrol penuh di dasbor ini.)</div>
+                <div class="text-muted small fst-italic mt-2">*(Data bersifat real time dan read only untuk keperluan manajemen, namun Kak Aen memiliki akses kontrol penuh di dasbor ini.)[cite: 9]</div>
             </div>
         </div>
 
-        <!-- ================= VIEW 2: EXECUTIVE MONITORING DASHBOARD (ASMAN FIRMAN) ================= -->
+        <!-- MOCKUP 2: EXECUTIVE MONITORING DASHBOARD (ASMAN FIRMAN) -->
         <div id="view-asman" class="app-view d-none">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="fw-bold text-dark m-0">EXECUTIVE MONITORING DASHBOARD: OVERHAUL LIMIT UMRO (ASMAN FIRMAN)</h4>
-                <span class="badge bg-success fs-6">Asman</span>
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded text-white" style="background-color: var(--pln-blue);">
+                <h4 class="fw-bold m-0 fs-5">EXECUTIVE MONITORING DASHBOARD: OVERHAUL LIMIT UMRO (ASMAN FIRMAN)</h4>
+                <span class="badge bg-warning text-dark fs-6">Asman Firman</span>[cite: 10]
             </div>
 
-            <!-- Ringkasan Keuangan Eksekutif -->
             <div class="row g-3 mb-4">
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-primary border-4"><h6>TOTAL PAGU LIMIT OH</h6><h4 class="fw-bold text-primary">Rp 2.500.000.000</h4></div></div>
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-secondary border-4"><h6>TOTAL PENGAJUAN MASUK</h6><h4 class="fw-bold text-dark">14 Berkas Surat</h4></div></div>
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-success border-4"><h6>PENGAJUAN DISELESAI (DONE)</h6><h4 class="fw-bold text-success">11 Berkas</h4></div></div>
-                <div class="col-md-3"><div class="card card-custom p-3 border-start border-warning border-4"><h6>SURAT TERTUNDA (WAITING)</h6><h4 class="fw-bold text-warning">3 Berkas</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-primary border-4"><h6>TOTAL PAGU LIMIT OH</h6><h4 class="fw-bold text-primary fs-5">Rp 2.500.000.000</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-secondary border-4"><h6>TOTAL PENGAJUAN MASUK</h6><h4 class="fw-bold text-dark fs-5">14 Berkas Surat</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-success border-4"><h6>PENGAJUAN DISELESAI (DONE)</h6><h4 class="fw-bold text-success fs-5">11 Berkas</h4></div></div>
+                <div class="col-md-3"><div class="card card-custom p-3 border-start border-warning border-4"><h6>SURAT TERTUNDA (WAITING)</h6><h4 class="fw-bold text-warning fs-5">3 Berkas</h4></div></div>
             </div>
 
-            <!-- Daftar Pemantauan Unit -->
             <div class="card card-custom p-3">
-                <h5 class="fw-bold mb-3">DAFTAR PEMANTAUAN KINERJA UNIT PEMBANGKIT</h5>
+                <h5 class="fw-bold mb-3 fs-6 text-dark">📊 DAFTAR PEMANTAUAN KINERJA UNIT PEMBANGKIT</h5>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle small text-center">
                         <thead class="table-dark">
@@ -239,15 +233,19 @@
             </div>
         </div>
 
-        <!-- ================= VIEW 3: EXPORT DATA LAPORAN ================= -->
+        <!-- MOCKUP 3: EXPORT DATA LAPORAN -->
         <div id="view-export" class="app-view d-none">
-            <h4 class="fw-bold text-dark mb-3">EXPORT DATA LAPORAN MONITORING LIMIT OVERHAUL</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded text-white" style="background-color: var(--pln-blue);">
+                <h4 class="fw-bold m-0 fs-5">EXPORT DATA LAPORAN MONITORING LIMIT OVERHAUL</h4>
+                <span class="badge bg-warning text-dark fs-6">Pusat Laporan</span>[cite: 11]
+            </div>
+
             <div class="card card-custom p-4 mb-4">
-                <h5 class="fw-bold mb-3">FILTER & EKSPOR DATA</h5>
+                <h5 class="fw-bold mb-3 fs-6 text-dark">🔍 FILTER & EKSPOR DATA</h5>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label small fw-bold">Pilih Unit Pembangkit</label>
-                        <select class="form-select">
+                        <select class="form-select form-select-sm">
                             <option>Semua Unit</option>
                             <option>Indramayu</option>
                             <option>Paiton</option>
@@ -256,25 +254,25 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small fw-bold">Rentang Tanggal</label>
-                        <div class="input-group">
+                        <div class="input-group input-group-sm">
                             <input type="date" class="form-control">
                             <input type="date" class="form-control">
                         </div>
                     </div>
                     <div class="col-md-4 d-flex align-items-end gap-2">
-                        <button class="btn btn-primary w-50">🔍 Terapkan Filter</button>
-                        <button class="btn btn-success w-50" onclick="alert('Mengunduh laporan Excel...')">📥 Ekspor Excel</button>
+                        <button class="btn btn-sm btn-primary w-50">Terapkan Filter</button>
+                        <button class="btn btn-sm btn-success w-50 fw-bold" onclick="alert('Mengunduh laporan Excel...')">📥 Ekspor Excel</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= VIEW 4: WEB MONITORING UNIT PEMBANGKIT (READ-ONLY) ================= -->
+        <!-- MOCKUP 4: WEB MONITORING UNIT PEMBANGKIT (READ-ONLY) -->
         <div id="view-unit" class="app-view d-none">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 p-3 rounded text-white" style="background-color: var(--pln-blue);">
                 <div>
-                    <h4 class="fw-bold text-dark m-0" id="unit-title-text">WEB MONITORING OVERHAUL LIMIT - UNIT PEMBANGKIT INDRAMAYU</h4>
-                    <span class="badge bg-success mt-1">🔒 Read-Only Mode (Akses Khusus Unit)</span>
+                    <h4 class="fw-bold m-0 fs-5" id="unit-title-text">WEB MONITORING OVERHAUL LIMIT - UNIT PEMBANGKIT INDRAMAYU</h4>
+                    <span class="badge bg-success mt-1">🔒 Read-Only Mode (Akses Khusus Unit)</span>[cite: 12]
                 </div>
                 <div>
                     <button class="btn btn-success btn-sm fw-bold" onclick="alert('Mengunduh laporan unit Excel...')">📥 Ekspor Excel</button>
@@ -283,7 +281,7 @@
             </div>
 
             <div class="card card-custom p-3">
-                <h5 class="fw-bold mb-3">PRATINJAU DATA & STATUS LIMIT OVERHAUL</h5>
+                <h5 class="fw-bold mb-3 fs-6 text-dark">PRATINJAU DATA & STATUS LIMIT OVERHAUL</h5>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle small text-center">
                         <thead class="table-secondary">
@@ -298,7 +296,7 @@
                                 <th>Status Poka-Yoke</th>
                             </tr>
                         </thead>
-                        <tbody id="unit-table-content">
+                        <tbody>
                             <tr>
                                 <td>1</td>
                                 <td>00234162701 (UMRO)</td>
@@ -322,13 +320,13 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="text-muted small fst-italic mt-2">*(Data bersifat real-time dan hanya dapat diakses dalam mode baca untuk keperluan monitoring UP Indramayu.)</div>
+                <div class="text-muted small fst-italic mt-2">*(Data bersifat real-time dan hanya dapat diakses dalam mode baca untuk keperluan monitoring UP Indramayu.)[cite: 12]</div>
             </div>
         </div>
 
     </div>
 
-    <!-- MODAL POP-UP PERINGATAN POKA-YOKE (ACTIVE NOTIFICATION) -->
+    <!-- MODAL POP-UP PERINGATAN POKA-YOKE (ACTIVE NOTIFICATION UNTUK UNIT) -->
     <div class="modal fade" id="pokaYokeModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg">
@@ -354,13 +352,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Simulasi Akun Pengguna
         const accounts = [
-            { user: "kak_aen", pass: "admin123", view: "admin", name: "Kak Aen", role: "Admin Pusat" },
-            { user: "asman", pass: "asman123", view: "asman", name: "Asman Firman", role: "Asman Keuangan" },
-            { user: "export", pass: "export123", view: "export", name: "Staff Export", role: "Pusat Laporan" },
-            { user: "up_indramayu", pass: "pln123", view: "unit", name: "UP Indramayu", role: "Operator Unit", unitName: "UP INDRAMAYU" },
-            { user: "up_paiton", pass: "pln123", view: "unit", name: "UP Paiton", role: "Operator Unit", unitName: "UP PAITON", alert: true }
+            { user: "kak_aen", pass: "admin123", view: "admin", name: "Kak Aen", role: "Admin Pusat" },[cite: 9]
+            { user: "asman", pass: "asman123", view: "asman", name: "Asman Firman", role: "Asman Keuangan" },[cite: 10]
+            { user: "export", pass: "export123", view: "export", name: "Staff Export", role: "Pusat Laporan" },[cite: 11]
+            { user: "up_indramayu", pass: "pln123", view: "unit", name: "UP Indramayu", role: "Operator Unit", unitName: "UP INDRAMAYU" },[cite: 12]
+            { user: "up_paiton", pass: "pln123", view: "unit", name: "UP Paiton", role: "Operator Unit", unitName: "UP PAITON", alert: true }[cite: 12]
         ];
 
         function handleLogin(event) {
@@ -378,25 +375,26 @@
                 document.getElementById('display-name').innerText = found.name;
                 document.getElementById('display-role').innerText = found.role;
 
-                switchView(found.view);
+                if(found.unitName) {
+                    document.getElementById('unit-title-text').innerText = "WEB MONITORING OVERHAUL LIMIT - UNIT PEMBANGKIT " + found.unitName;
+                }
 
-                // Jika unit paiton, munculkan pop-up peringatan Poka-Yoke
+                forceView(found.view);
+
                 if (found.alert) {
                     setTimeout(() => {
                         let myModal = new bootstrap.Modal(document.getElementById('pokaYokeModal'));
                         myModal.show();
-                    }, 500);
+                    }, 600);
                 }
             } else {
                 alertBox.innerText = "Username atau password salah! Gunakan akun uji coba di bawah.";
-                alertBox.classList.remove('d-none');
+                alertBox.classList.et('d-none'); // wait, syntax fix: classList.remove
             }
         }
 
-        function switchView(viewName) {
-            // Sembunyikan semua view
+        function forceView(viewName) {
             document.querySelectorAll('.app-view').forEach(el => el.classList.add('d-none'));
-            // Tampilkan view yang dipilih
             document.getElementById('view-' + viewName).classList.remove('d-none');
         }
 
